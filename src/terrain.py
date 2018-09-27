@@ -2,11 +2,13 @@ import numpy as np
 
 
 class Terrain(object):
-    def __init__(self, power, roughness):
+    def __init__(self, power, roughness, mu, sigma):
         self.edgesize = 2 ** power + 1
         self.maxheight = self.edgesize - 1
         self.map = np.full((self.edgesize, self.edgesize), self.maxheight / 2)
         self.roughness = roughness
+        self.mu = mu
+        self.sigma = sigma
 
         self.setcorners()
         self.divide(self.edgesize - 1)
@@ -32,11 +34,15 @@ class Terrain(object):
 
         for y in np.arange(half, self.edgesize - 1, size):
             for x in np.arange(half, self.edgesize - 1, size):
-                self.square(x, y, half, np.random.rand() * scale * 2 - scale)
+                self.square(
+                    x, y, half,
+                    np.random.normal(self.mu, self.sigma) * scale * 2 - scale)
 
         for y in np.arange(0, self.edgesize, half):
             for x in np.arange(np.mod(y + half, size), self.edgesize, size):
-                self.diamond(x, y, half, np.random.rand() * scale * 2 - scale)
+                self.diamond(
+                    x, y, half,
+                    np.random.normal(self.mu, self.sigma) * scale * 2 - scale)
 
         self.divide(size / 2)
 

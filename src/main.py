@@ -6,7 +6,7 @@ from .terrain import Terrain
 
 
 def main():
-    terr = Terrain(8, 0.5)
+    terr = Terrain(8, 0.5, 0.5, 0.5)
 
     terrshape = terr.map.shape
 
